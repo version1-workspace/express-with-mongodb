@@ -1,3 +1,3 @@
 # Blog App
 
-A0520 NodeJS Midterm Project
+A0520 Node.js Midterm Project
