@@ -6,7 +6,7 @@ const mongoose = require('mongoose');
 // Model
 const Article = require('./model/Articles');
 // Routes
-const articleRouter = require('./routes/atricles.routes');
+const articleRoute = require('./routes/atricles.routes');
 
 const app = epxress();
 
@@ -19,24 +19,13 @@ app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
 
-// home route
-app.get('/', async(req, res) => {
-  // const articles = [{
-  //   title: 'title',
-  //   createdAt: new Date(),
-  //   description: 'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Tempora, reiciendis. Itaque alias rem quasi adipisci, nostrum, debitis ab veritatis fuga eius nisi voluptatibus possimus natus voluptatum repudiandae dicta. Explicabo, laudantium.'
-  // }]
-  const articles = await Article.find({})
-  res.render('index', { title: 'My Blog', articles });
-})
-
 // routes
-app.use('/articles', articleRouter);
+app.use('/articles', articleRoute);
 
 // 404 page not found
-app.use((req, res) => {
-  res.render('404')
-})
+// app.use((req, res) => {
+//   res.render('404')
+// })
 
 
 // mongoose
