@@ -3,9 +3,7 @@ const path = require('path');
 const methodOverride = require('method-override');
 const mongoose = require('mongoose');
 
-// Model
-const Article = require('./model/Articles');
-// Routes
+const AppError = require('./util/AppError');
 const articleRoute = require('./routes/atricles.routes');
 
 const app = epxress();
@@ -28,7 +26,22 @@ app.use((req, res) => {
 })
 
 
-// mongoose
+// handle error
+const handleValidationErr = err => {
+  return new AppError(`Validation Failed... ${err.message}`, 400);
+}
+
+app.use((err, req, res, next) => {
+  if(err.name === 'ValidationError') err = handleValidationErr(err)
+  next(err);
+});
+
+app.use((err, req, res, next) => {
+  const { status = 500, message = 'Something went wrong'} = err;
+  res.status(status).send(message);
+});
+
+
 mongoose
   .connect('mongodb://127.0.0.1:27017/myblog', {
     useNewUrlParser: true,
