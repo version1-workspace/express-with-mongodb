@@ -1,8 +1,8 @@
 const Article = require('../model/Articles');
 
 exports.getAllArticles = async(req, res) => {
-  const articles = await Article.find({})
-  res.render('articles/index', { title: 'My Blog', articles });
+  const articles = await Article.find({}).sort({ createdAt: 'desc'})
+  res.render('articles/index', { title: 'My Daily Notes', articles });
 }
 
 exports.createArticleView = (req, res) => {
@@ -16,28 +16,24 @@ exports.createArticle = async(req, res) => {
 }
 
 exports.showArticle = async(req, res) => {
-  const { id } = req.params
-  const article = await Article.findById(id)
+  const article = await Article.findById(req.params.id)
   if(!article){
-    res.redirect('/')
+    res.redirect('/articles')
   }
   res.render('articles/show', { article })
 }
 
 exports.updateArticleView = async(req, res) => {
-  const { id } = req.params
-  const article = await Article.findById(id)
-  res.render('articles/edit', { article })
+  const article = await Article.findById(req.params.id)
+  res.render('articles/edit', { title: 'Edit Article', article })
 }
 
 exports.updateArticle = async(req, res) => {
-  const { id } = req.params
-  const article = await Article.findByIdAndUpdate(id, req.body, { runValidators: true, new: true })
+  const article = await Article.findByIdAndUpdate(req.params.id, req.body, { runValidators: true, new: true })
   res.redirect(`/articles/${article.id}`)
 }
 
 exports.deleteArticle = async(req, res) => {
-  const { id } = req.params
-  await Article.findByIdAndDelete(id)
+  await Article.findByIdAndDelete(req.params.id)
   res.redirect('/articles')
 }

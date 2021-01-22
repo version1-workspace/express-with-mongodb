@@ -23,9 +23,9 @@ app.set('views', path.join(__dirname, 'views'));
 app.use('/articles', articleRoute);
 
 // 404 page not found
-// app.use((req, res) => {
-//   res.render('404')
-// })
+app.use((req, res) => {
+  res.render('404')
+})
 
 
 // mongoose
