@@ -1,4 +1,5 @@
-const Article = require('../model/Articles');
+const Article = require('../model/Article');
+const User = require('../model/User');
 const AppError = require('../util/AppError');
 
 function wrapAsync(fn){
@@ -6,7 +7,6 @@ function wrapAsync(fn){
     fn(req, res, next).catch(err => next(err))
   }
 }
-
 
 exports.getAllArticles = wrapAsync(async(req, res, next) => {
   const articles = await Article.find({}).sort({ createdAt: 'desc'})
@@ -21,7 +21,11 @@ exports.createArticleView = (req, res, next) => {
 }
 
 exports.createArticle = wrapAsync(async(req, res, next) => {
-  const newArticle = new Article(req.body)
+  const { author, title, content } = req.body
+  const user = new User({ name: author })
+  await user.save()
+
+  const newArticle = new Article({ title, content, authorId: user.id })
   await newArticle.save()
   res.redirect(`/articles`)
 })
@@ -35,7 +39,7 @@ exports.showArticle = wrapAsync(async(req, res, next) => {
 })
 
 exports.createComment = wrapAsync(async(req, res, next) => {
-  // 
+  //
 })
 
 exports.updateArticleView = wrapAsync(async(req, res, next) => {

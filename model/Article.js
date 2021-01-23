@@ -13,14 +13,18 @@ const articleSchema = new mongoose.Schema({
     type: Date,
     default: Date.now
   },
-  // author: {
-  //   type: String,
-  //   required: [true, 'Author is required']
-  // },
-  // comments: {
-  //   type: String,
-  //   default: []
-  // }
+  authorId: {
+    type: String,
+    required: [true, 'Author is required']
+  },
+  commentIds: {
+    type: [String],
+    default: []
+  },
+  likeIds: {
+    type: [String],
+    default: []
+  }
 });
 
 const Article = mongoose.model('Article', articleSchema);
